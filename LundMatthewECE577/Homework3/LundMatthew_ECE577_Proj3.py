@@ -6,6 +6,7 @@
 
 #For grabbing ImageNet Images
 import os
+import random
 script_directory = os.path.dirname(os.path.abspath(__file__))
 save_directory = os.path.join(script_directory, "Adversarial_Images")
 
@@ -33,19 +34,11 @@ fmodel = foolbox.models.TensorFlowModel.from_keras(model, preprocessing=preproce
 # Define the directory containing the images
 images_directory = os.path.join(script_directory, "Images")
 
-# Image filenames (Images randomly chosen from 2012 ImageNet Resources)
-image_filenames = [
-    '1.JPEG',
-    '2.JPEG',
-    '3.JPEG',
-    '4.JPEG',
-    '5.JPEG',
-    '6.JPEG',
-    '7.JPEG',
-    '8.JPEG',
-    '9.JPEG',
-    '10.JPEG',
-]
+# Get all JPEG filenames in the directory
+all_filenames = [f for f in os.listdir(images_directory) if f.endswith('.JPEG')]
+
+# Randomly pick 10 filenames
+image_filenames = random.sample(all_filenames, 10)
 
 # Initialize attacks
 attack_criterion = foolbox.criteria.Misclassification()
