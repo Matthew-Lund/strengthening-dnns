@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 #Matthew Lund
 #mtlund@wpi.edu
 #ECE577 Homework3
@@ -10,6 +7,8 @@
 #For grabbing ImageNet Images
 import os
 script_directory = os.path.dirname(os.path.abspath(__file__))
+save_directory = os.path.join(script_directory, "Adversarial_Images")
+
 #Tensorflow and Keras
 import tensorflow as tf
 from tensorflow import keras
@@ -19,7 +18,6 @@ from keras.applications.resnet50 import preprocess_input
 #Numpy and Plotting
 import numpy as np
 import matplotlib.pyplot as plt
-#Using Jupyter Notebook
 
 #Foolbox
 import foolbox
@@ -51,12 +49,13 @@ image_filenames = [
 
 # Initialize attacks
 attack_criterion = foolbox.criteria.Misclassification()
+attack_criterion_single = foolbox.criteria.OriginalClassProbability(0.9998)
 
 attacks = {
     'BlendedUniformNoiseAttack': BlendedUniformNoiseAttack(fmodel, criterion=attack_criterion),
     'ContrastReductionAttack': ContrastReductionAttack(fmodel, criterion=attack_criterion),
     'FGSM': FGSM(fmodel, criterion=attack_criterion),
-    'SinglePixelAttack': SinglePixelAttack(fmodel, criterion=attack_criterion),
+    'SinglePixelAttack': SinglePixelAttack(fmodel, criterion = attack_criterion_single),
     'SaliencyMapAttack': SaliencyMapAttack(fmodel, criterion=attack_criterion)
 }
 
@@ -100,4 +99,8 @@ for image_file in image_filenames:
         plt.imshow(noise / np.max(np.abs(noise)) / 2.0 + 0.5)
         plt.axis('off')
 
-        plt.show()
+        # Save the image
+        save_path = os.path.join(save_directory, f"{image_file}_{attack_name}.png")
+        plt.savefig(save_path)
+
+        plt.close()  # Close the plot to release memory
