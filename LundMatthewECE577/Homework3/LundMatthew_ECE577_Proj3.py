@@ -38,7 +38,7 @@ images_directory = os.path.join(script_directory, "Images")
 all_filenames = [f for f in os.listdir(images_directory) if f.endswith('.JPEG')]
 
 # Randomly pick 10 filenames
-image_filenames = random.sample(all_filenames, 10)
+image_filenames = random.sample(all_filenames, 100)
 
 # Initialize attacks
 attack_criterion = foolbox.criteria.Misclassification()
