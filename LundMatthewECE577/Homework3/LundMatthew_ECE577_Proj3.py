@@ -33,7 +33,7 @@ fmodel = foolbox.models.TensorFlowModel.from_keras(model, preprocessing=preproce
 # Define the directory containing the images
 images_directory = os.path.join(script_directory, "Images")
 
-# Image filenames (Images randomly chosen from 2012 ImageNet)
+# Image filenames (Images randomly chosen from 2012 ImageNet Resources)
 image_filenames = [
     '1.JPEG',
     '2.JPEG',
@@ -49,7 +49,7 @@ image_filenames = [
 
 # Initialize attacks
 attack_criterion = foolbox.criteria.Misclassification()
-attack_criterion_single = foolbox.criteria.OriginalClassProbability(0.9998)
+attack_criterion_single = foolbox.criteria.OriginalClassProbability(0.05)
 
 attacks = {
     'BlendedUniformNoiseAttack': BlendedUniformNoiseAttack(fmodel, criterion=attack_criterion),
